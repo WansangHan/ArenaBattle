@@ -13,6 +13,14 @@ class WEBSERVICE_API UWebConnect : public UObject
 {
 	GENERATED_BODY()
 	
+public:
+	UWebConnect() {}
+
+	UPROPERTY()
+	FString MyName;
+
+	UFUNCTION()
+	FString GetName() { return TEXT("MyName"); }
 	
 	
 	
