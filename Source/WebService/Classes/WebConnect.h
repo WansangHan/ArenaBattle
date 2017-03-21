@@ -11,17 +11,15 @@
 UCLASS()
 class WEBSERVICE_API UWebConnect : public UObject
 {
+	//UHT의 매크로
 	GENERATED_BODY()
 	
-public:
-	UWebConnect() {}
-
+public :
+	UWebConnect();
+	
 	UPROPERTY()
 	FString MyName;
 
 	UFUNCTION()
 	FString GetName() { return TEXT("MyName"); }
-	
-	
-	
 };

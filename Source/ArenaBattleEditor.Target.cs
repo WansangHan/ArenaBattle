@@ -3,11 +3,11 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class AranaBattleTarget : TargetRules
+public class ArenaBattleEditorTarget : TargetRules
 {
-	public AranaBattleTarget(TargetInfo Target)
+	public ArenaBattleEditorTarget(TargetInfo Target)
 	{
-		Type = TargetType.Game;
+		Type = TargetType.Editor;
 	}
 
 	//
@@ -20,6 +20,6 @@ public class AranaBattleTarget : TargetRules
 		ref List<string> OutExtraModuleNames
 		)
 	{
-		OutExtraModuleNames.AddRange( new string[] { "AranaBattle", "WebService" } );
+		OutExtraModuleNames.AddRange( new string[] { "ArenaBattle", "WebService" } );
 	}
 }

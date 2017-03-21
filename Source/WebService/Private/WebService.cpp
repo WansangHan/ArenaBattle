@@ -2,4 +2,4 @@
 
 #include "WebService.h"
 
-IMPLEMENT_MODULE( FDefaultGameModuleImpl, AranaBattle);
+IMPLEMENT_MODULE(FDefaultModuleImpl, WebService);

@@ -2,11 +2,11 @@
 
 using UnrealBuildTool;
 
-public class AranaBattle : ModuleRules
+public class ArenaBattle : ModuleRules
 {
-	public AranaBattle(TargetInfo Target)
+	public ArenaBattle(TargetInfo Target)
 	{
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "WebService" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

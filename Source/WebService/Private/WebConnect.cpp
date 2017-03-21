@@ -4,5 +4,7 @@
 #include "WebConnect.h"
 
 
-
-
+UWebConnect::UWebConnect()
+{
+	UE_LOG(LogClass, Warning, TEXT("WebConnect Constructor Call"));
+}
