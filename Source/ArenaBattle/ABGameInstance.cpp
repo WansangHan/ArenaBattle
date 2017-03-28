@@ -18,6 +18,9 @@ void UABGameInstance::Init()
 	Super::Init();
 	WebConnect2 = NewObject<UWebConnect>(this);
 
+	AB_LOG(Warning, TEXT("Outer of NewObject : %s"), *WebConnect2->GetOuter()->GetClass()->GetName());
+	AB_LOG(Warning, TEXT("Outer of NewObject : %s"), *WebConnect2->GetOuter()->GetClass()->GetFullName());
+
 	UClass* ClassInfo1 = WebConnect->GetClass();
 	UClass* ClassInfo2 = UWebConnect::StaticClass();
 
