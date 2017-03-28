@@ -20,8 +20,38 @@ void UABGameInstance::Init()
 
 	UClass* ClassInfo1 = WebConnect->GetClass();
 	UClass* ClassInfo2 = UWebConnect::StaticClass();
-	if(ClassInfo1 == ClassInfo2)
+
+	if (ClassInfo1 == ClassInfo2)
 	{
 		AB_LOG(Warning, TEXT("ClassInfo1 is same with ClassInfo2"));
 	}
+
+	//TFieldIterator가 UProperty로 등록된 Property들을 순회함.
+	for (TFieldIterator<UProperty> It(ClassInfo2); It; ++It)
+	{
+		AB_LOG(Warning, TEXT("Field : %s, Type : %s"), *It->GetName(), *It->GetClass()->GetName());
+
+		//문자열 프로퍼티를 찾음.
+		UStrProperty* StrProp = FindField<UStrProperty>(ClassInfo1, *It->GetName());
+		if (StrProp)
+		{
+			AB_LOG(Warning, TEXT("Value = %s"), *StrProp->GetPropertyValue_InContainer(WebConnect));
+		}
+	}
+	
+	//등록된 함수 테이블을 순회하며 모든 함수를 호출.
+	for (const auto& Entry : ClassInfo1->NativeFunctionLookupTable)
+	{
+		AB_LOG(Warning, TEXT("Function = %s"), *Entry.Name.ToString());
+
+		UFunction* Func1 = ClassInfo1->FindFunctionByName(Entry.Name);
+		if (Func1->ParmsSize == 0)
+		{
+			WebConnect->ProcessEvent(Func1, NULL);
+		}
+	}
+
+	//이름으로 찾아 호출
+	UFunction* Func2 = ClassInfo1->FindFunctionByName(FName("RequestToken"));
+	WebConnect->ProcessEvent(Func2, NULL);
 }

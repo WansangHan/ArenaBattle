@@ -8,6 +8,7 @@
 /**
  * 
  */
+ //언리얼 오브젝트를 사용하기 위하여 클래스 이름 앞에 U가 있어야 함.
 UCLASS()
 class WEBSERVICE_API UWebConnect : public UObject
 {
@@ -16,10 +17,13 @@ class WEBSERVICE_API UWebConnect : public UObject
 	
 public :
 	UWebConnect();
-	
+
 	UPROPERTY()
-	FString MyName;
+	FString Host;
+
+	UPROPERTY()
+	FString URI;
 
 	UFUNCTION()
-	FString GetName() { return TEXT("MyName"); }
+	void RequestToken();
 };
