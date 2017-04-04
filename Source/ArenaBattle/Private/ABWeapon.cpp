@@ -12,7 +12,7 @@ AABWeapon::AABWeapon()
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponHash"));
 	RootComponent = Weapon;
 
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Weapon(TEXT("SkeletalMesh'/Game/InfinityBladeWeapons/Weapons/Blade/Swords/Blade_Glimmer/SK_Blade_Glimmer.SK_Blade_Glimmer'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Weapon(TEXT("SkeletalMesh'/Game/InfinityBladeWeapons/Weapons/Blade/Swords/Blade_Glimmer/SK_Blade_Glimmer.SK_Blade_Glimmer'"));
 	Weapon->SetSkeletalMesh(SK_Weapon.Object);
 }
 
