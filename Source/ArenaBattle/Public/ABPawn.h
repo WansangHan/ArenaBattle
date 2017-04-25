@@ -31,6 +31,9 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement")
 	class UFloatingPawnMovement* Movement;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "SpringArm")
+	class USpringArmComponent* SpringArm;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
 	class UCameraComponent* Camera;
@@ -44,4 +47,13 @@ public:
 public:
 	UPROPERTY(config, BlueprintReadOnly, VisibleInstanceOnly, Category="Asset")
 	TArray<FStringAssetReference> CharacterAssets;
+
+	float CurrentLeftRightVal;
+	float CurrentUpDownVal;
+
+	UFUNCTION()
+	void UpDownInput(float NewInputVal);
+
+	UFUNCTION()
+	void LeftRightInput(float NewInputval);
 };

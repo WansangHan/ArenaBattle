@@ -2,6 +2,7 @@
 
 #include "ArenaBattle.h"
 #include "ABGameInstance.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "ABPawn.h"
 
 
@@ -11,19 +12,30 @@ AABPawn::AABPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	Body = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Body"));
+	Body = CreateDefaultSubobject<UCapsuleComponent>("Capsule");
 	RootComponent = Body;
-	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+
+	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
 	Mesh->SetupAttachment(Body);
-	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
+	SpringArm->SetupAttachment(Body);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
-	Camera->SetupAttachment(Body);
+	Camera->SetupAttachment(SpringArm);
 
-	Body->SetCapsuleHalfHeight(88.0f);
-	Body->SetCapsuleRadius(34.0f);
+	Movement = CreateDefaultSubobject<UFloatingPawnMovement>("Movement");
+
+	Body->SetCapsuleSize(34.0f, 88.0f);
 	Mesh->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
-	Camera->SetRelativeLocationAndRotation(FVector(-430.0f, 0.0f, 135.0f), FRotator(-20.0f, 0.0f, 0.0f));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Warrior(TEXT("SkeletalMesh'/Game/InfinityBladeWarriors/Character/CompleteCharacters/SK_CharM_Cardboard.SK_CharM_Cardboard'"));
+	Mesh->SetSkeletalMesh(SK_Warrior.Object);
+	SpringArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+	SpringArm->TargetArmLength = 650.0f;
+	SpringArm->bInheritPitch = false;
+	SpringArm->bInheritYaw = false;
+	SpringArm->bInheritRoll = false;
+
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Mesh(TEXT("SkeletalMesh'/Game/InfinityBladeWarriors/Character/CompleteCharacters/SK_CharM_Cardboard.SK_CharM_Cardboard'"));
 	Mesh->SetSkeletalMesh(SK_Mesh.Object);
@@ -55,6 +67,13 @@ void AABPawn::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	FVector InputVector = FVector(CurrentUpDownVal, CurrentLeftRightVal, 0.0F);
+	if (InputVector.SizeSquared() > 0.0F)
+	{
+		FRotator TargetRotation = UKismetMathLibrary::MakeRotFromX(InputVector);
+		SetActorRotation(TargetRotation);
+		AddMovementInput(GetActorForwardVector());
+	}
 }
 
 // Called to bind functionality to input
@@ -62,5 +81,16 @@ void AABPawn::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
+	InputComponent->BindAxis("LeftRight", this, &AABPawn::LeftRightInput);
+	InputComponent->BindAxis("UpDown", this, &AABPawn::UpDownInput);
 }
 
+void AABPawn::LeftRightInput(float NewInputVal)
+{
+	CurrentLeftRightVal = NewInputVal;
+}
+
+void AABPawn::UpDownInput(float NewInputVal)
+{
+	CurrentUpDownVal = NewInputVal;
+}

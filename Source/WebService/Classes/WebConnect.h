@@ -5,6 +5,8 @@
 #include "UObject/NoExportTypes.h"
 #include "WebConnect.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FTokenCompleteSignature, const FString&);
+
 /**
  * 
  */
@@ -25,5 +27,7 @@ public :
 	FString URI;
 
 	UFUNCTION()
-	void RequestToken();
+	void RequestToken(const FString& UserID);
+
+	FTokenCompleteSignature TokenCompleteDelegate;
 };

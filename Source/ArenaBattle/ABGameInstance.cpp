@@ -187,6 +187,12 @@ void UABGameInstance::Init()
 	//GetWorld()->ForceGarbageCollection(true);
 	GetWorld()->GetTimerManager().SetTimer(ObjectCheckTimer, this, &UABGameInstance::CheckUObjectAlive, 1.0f, true);
 
+	FHouse* HouseNew = new FHouse;
+
+	WebConnect->TokenCompleteDelegate.AddUObject(this, &UABGameInstance::RequestTokenComplete);
+	WebConnect->TokenCompleteDelegate.AddUObject(this, &UABGameInstance::RequestTokenComplete2);
+	WebConnect->TokenCompleteDelegate.AddRaw(HouseNew, &FHouse::RequestTokenComplete);
+	WebConnect->RequestToken(TEXT("destiny"));
 }
 
 void UABGameInstance::CheckUObjectAlive()
@@ -204,4 +210,14 @@ void UABGameInstance::CheckUObjectAlive()
 	}
 
 	AB_LOG(Warning, TEXT("언리얼오브젝트가 아직 살아있습니다. : %s"), *WebConnect2->Host);
+}
+
+void UABGameInstance::RequestTokenComplete(const FString& Token)
+{
+	AB_LOG(Warning, TEXT("Token : %s"), *Token);
+}
+
+void UABGameInstance::RequestTokenComplete2(const FString& Token)
+{
+	AB_LOG(Warning, TEXT("Token2 : %s"), *Token);
 }
