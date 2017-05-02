@@ -34,10 +34,13 @@ public :
 	//Runtime 시작시 호출
 	virtual void Init() override;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "WebService")
 	class UWebConnect* WebConnect;
-	// UPROPERTY()
+	UPROPERTY()
 	class UWebConnect* WebConnect2;
+
+	UPROPERTY()
+	class UWebConnect* WebConnectionNew;
 
 	UPROPERTY()
 	FStreamableManager AssetLoader;
