@@ -107,6 +107,11 @@ void AABPawn::OnPressNormalAttack()
 	CurrentState = EPlayerState::BATTLE;
 }
 
+void AABPawn::OnNormalAttackEnd()
+{
+	CurrentState = EPlayerState::PEACE;
+}
+
 void AABPawn::UpDownInput(float NewInputVal)
 {
 	CurrentUpDownVal = NewInputVal;

@@ -67,4 +67,6 @@ public:
 
 	UFUNCTION()
 	void OnPressNormalAttack();
+
+	void OnNormalAttackEnd();
 };

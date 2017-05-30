@@ -18,7 +18,7 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	UFUNCTION()
-	void AnimNotify_AttackEnd(UAnimNotify* Notify) { AB_LOG_CALLONLY(Warning); }
+	void AnimNotify_AttackEnd(UAnimNotify* Notify);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Pawn")
 	float VelocityAnim;

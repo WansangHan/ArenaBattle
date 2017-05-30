@@ -26,3 +26,20 @@ void UABAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 	}
 }
+
+void UABAnimInstance::AnimNotify_AttackEnd(UAnimNotify * Notify)
+{
+	APawn* OwnerPawn = TryGetPawnOwner();
+
+	if (OwnerPawn != nullptr)
+	{
+		if (OwnerPawn->IsValidLowLevel())
+		{
+			AABPawn* ABPawn = Cast<AABPawn>(OwnerPawn);
+			if (ABPawn)
+			{
+				ABPawn->OnNormalAttackEnd();
+			}
+		}
+	}
+}
