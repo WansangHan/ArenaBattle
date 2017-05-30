@@ -2,6 +2,7 @@
 
 #include "ArenaBattle.h"
 #include "ABGameInstance.h"
+#include "ABAnimInstance.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "ABPawn.h"
 
@@ -105,6 +106,14 @@ void AABPawn::LeftRightInput(float NewInputVal)
 void AABPawn::OnPressNormalAttack()
 {
 	CurrentState = EPlayerState::BATTLE;
+
+	UABAnimInstance* AnimInst = Cast<UABAnimInstance>(Mesh->GetAnimInstance());
+
+	if (AnimInst)
+	{
+		AnimInst->ReceiveNormalAttackInput();
+
+	}
 }
 
 void AABPawn::OnNormalAttackEnd()

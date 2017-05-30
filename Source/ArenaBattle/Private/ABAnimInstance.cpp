@@ -43,3 +43,42 @@ void UABAnimInstance::AnimNotify_AttackEnd(UAnimNotify * Notify)
 		}
 	}
 }
+
+void UABAnimInstance::AnimNotify_NextAttack(UAnimNotify* Notify)
+{
+	bCanDoNextAttack = false;
+	if (bInputReservedForNextAttack)
+	{
+		PlayNormalAttack(++CurrentNormalAttackIndex);
+	}
+}
+
+void UABAnimInstance::ReceiveNormalAttackInput()
+{
+	AB_LOG_CALLONLY(Warning);
+
+	if (CurrentNormalAttackIndex == -1)
+	{
+		PlayNormalAttack(1);
+	}
+	else
+	{
+		if (bCanDoNextAttack)
+		{
+			bInputReservedForNextAttack = true;
+		}
+	}
+}
+
+void UABAnimInstance::PlayNormalAttack(int32 NewIndex)
+{
+	if (!Montage_IsPlaying(NormalAttackMontage))
+	{
+		Montage_Play(NormalAttackMontage, 1.5F);
+	}
+	FName MontageSectionToJump(*FString::Printf(TEXT("Attack%d"), NewIndex));
+	Montage_JumpToSection(MontageSectionToJump, NormalAttackMontage);
+	CurrentNormalAttackIndex = NewIndex;
+	bCanDoNextAttack = true;
+	bInputReservedForNextAttack = false;
+}
