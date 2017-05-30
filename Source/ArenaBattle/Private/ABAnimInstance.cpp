@@ -7,6 +7,7 @@ UABAnimInstance::UABAnimInstance()
 {
 	VelocityAnim = 0.0F;
 	CurrentStateAnim = EPlayerState::PEACE;
+	CurrentNormalAttackIndex = -1;
 }
 
 void UABAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -39,6 +40,8 @@ void UABAnimInstance::AnimNotify_AttackEnd(UAnimNotify * Notify)
 			if (ABPawn)
 			{
 				ABPawn->OnNormalAttackEnd();
+				bCanDoNextAttack = true;
+				CurrentNormalAttackIndex = -1;
 			}
 		}
 	}
@@ -55,8 +58,6 @@ void UABAnimInstance::AnimNotify_NextAttack(UAnimNotify* Notify)
 
 void UABAnimInstance::ReceiveNormalAttackInput()
 {
-	AB_LOG_CALLONLY(Warning);
-
 	if (CurrentNormalAttackIndex == -1)
 	{
 		PlayNormalAttack(1);
@@ -72,6 +73,8 @@ void UABAnimInstance::ReceiveNormalAttackInput()
 
 void UABAnimInstance::PlayNormalAttack(int32 NewIndex)
 {
+	AB_LOG_CALLONLY(Warning);
+
 	if (!Montage_IsPlaying(NormalAttackMontage))
 	{
 		Montage_Play(NormalAttackMontage, 1.5F);
